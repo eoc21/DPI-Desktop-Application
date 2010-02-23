@@ -63,6 +63,7 @@ public class DPIDesktopApplication extends JFrame {
 		JButton submit = new JButton("Submit");
         submit.addMouseListener(new OurClickHandler());
         JButton close = new JButton("Clear");
+        close.addMouseListener(new ClearClickHandler());
         center.add(new JLabel("Select property:"));
         center.add(propertyList);
         center.add(new JLabel("Modifier"));
@@ -115,11 +116,17 @@ public class DPIDesktopApplication extends JFrame {
 	public static String getUnit(){
 		return unitBox.getText();
 	}
-	
+	/**
+	 * 
+	 * @return String representation of content in property selection.
+	 */
 	public static String getPropertySelected(){
 		return propertySelected.getText();
 	}
-	
+	/**
+	 * 
+	 * @return String representation of modifier selected.
+	 */
 	public static String getModifierSelected(){
 		return modifierSelected.getText();
 	}
@@ -160,6 +167,56 @@ public class DPIDesktopApplication extends JFrame {
 	public static double getMinimum(){
 		return Double.parseDouble(minimumValueBox.getText());
 	}
+	
+	//Methods to clear content in the text box.
+	/**
+	 * Sets the exact value textbox.
+	 * @param inputValue - String value to set textbox.
+	 */
+	public static void setExactTextBoxValue(String inputValue){
+		exactValueBox.setText(inputValue);
+	}
+	/**
+	 * Sets the maximum value textbox.
+	 * @param inputValue - String value to set textbox.
+	 */
+	public static void setMaxTextBoxValue(String inputValue){
+		maximumValueBox.setText(inputValue);
+	}
+	/**
+	 * Sets the minimum value textbox.
+	 * @param inputValue - String value to set textbox.
+	 */
+	public static void setMinTextBoxValue(String inputValue){
+		minimumValueBox.setText(inputValue);
+	}
+	/**
+	 * Sets the technique textbox.
+	 * @param inputValue - String value to set textbox.
+	 */
+	public static void setTechniqueBoxValue(String inputValue){
+		techniqueBox.setText(inputValue);
+	}
+	/**
+	 * Sets the condition textbox.
+	 * @param inputValue - String value to set textbox.
+	 */
+	public static void setConditionBoxValue(String inputValue){
+		conditionBox.setText(inputValue);
+	}
+	/**
+	 * Sets the unit textbox.
+	 * @param inputValue - String value to set textbox.
+	 */
+	public static void setUnitBoxValue(String inputValue){
+		unitBox.setText(inputValue);
+	}
+	
+	/**
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
 		
 	public static void main (String [] args) throws IOException{
 		new DPIDesktopApplication();
