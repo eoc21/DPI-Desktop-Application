@@ -32,6 +32,19 @@ public class OurClickHandler implements MouseListener {
 			ResultSet results = queryTechnique(technique, m);
 			System.out.println(technique);
 		}
+		else if(filterValue.equals("") && !maximumValue.equals("") && !minimumValue.equals("") && !condition.equals("") && aUnit.equals("") && !technique.equals("")){
+			try{
+				maximumValueSelected = Double.parseDouble(maximumValue);
+				minimumValueSelected = Double.parseDouble(minimumValue);
+				ResultSet results = propertyTechniqueConditionQuery(propertySelected, minimumValueSelected, maximumValueSelected, technique, condition, m);
+			}
+			catch(NumberFormatException e){
+				System.out.println("Either the max or minimum value is not a proper number!");
+				e.printStackTrace();
+				throw new NumberFormatException();
+			}
+		}
+		
 		else if (filterValue.equals("") && maximumValue.equals("") && minimumValue.equals("") && !condition.equals("") && aUnit.equals("") && technique.equals("")){
 			ResultSet results = queryCondition(condition, m);
 		}
@@ -262,7 +275,39 @@ public class OurClickHandler implements MouseListener {
 		ResultSetFormatter.out(System.out, results, query);
 		qe.close();
 		return results;
+	}
+	
+	private ResultSet propertyTechniqueConditionQuery(String propertySelected,double minValue, double maxValue, String technique, String condition, Model m){
+		String queryValues = 
+		"PREFIX prop: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#> " +	
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+		"PREFIX metrology: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomMetrology.owl#>"+
+		"SELECT *"+
+		"WHERE {"+"?x prop:hasValue ?hasValue." +	
+		"?x prop:hasMeasurementTechnique ?technique."+			
+		"?x rdf:type <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#"+propertySelected+">."+
+		"?x metrology:hasCondition ?condition."+
+		"?x prop:hasUnit ?hasUnit."+
+		"FILTER((?hasValue >="+minValue+") && (?hasValue <="+maxValue+"))"+
+		"FILTER regex(?technique,"+ "\""+technique+"\")"+
+		"FILTER regex(?condition,"+ "\""+condition+"\")"+
+		"}"+
+		"LIMIT 100";
+	com.hp.hpl.jena.query.Query query = QueryFactory.create(queryValues);
+	QueryExecution qe = QueryExecutionFactory.create(query, m);
+	ResultSet results = qe.execSelect();
+	// Output query results	
+	ResultSetFormatter.out(System.out, results, query);
+	qe.close();
+	return results;
 
 	}
 	
+	private ResultSet propertyTechniqueQuery(){
+		return null;
+	}
+	
+	private ResultSet propertyConditionQuery(){
+		return null;
+	}
 }
