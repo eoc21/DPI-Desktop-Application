@@ -28,7 +28,12 @@ public class OurClickHandler implements MouseListener {
 		double exactFilterValue = 0;
 		double maximumValueSelected = 0;
 		double minimumValueSelected = 0;
-		if(filterValue.equals("") && (maximumValue.equals("") || minimumValue.equals(""))){
+		if(filterValue.equals("") && maximumValue.equals("") && minimumValue.equals("") && condition.equals("") && aUnit.equals("") && !technique.equals("")){
+			ResultSet results = queryTechnique(technique, m);
+			System.out.println(technique);
+		}
+
+		else if(filterValue.equals("") && (maximumValue.equals("") || minimumValue.equals(""))){
 			System.out.println("Need to enter a value or range to query over!");
 			throw new NullPointerException();
 		}
@@ -56,6 +61,7 @@ public class OurClickHandler implements MouseListener {
 				throw new NumberFormatException();
 			}
 		}
+		
 /*		String queryValues = 
 			"PREFIX prop: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#> " +	
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
@@ -178,4 +184,40 @@ public class OurClickHandler implements MouseListener {
 		qe.close();
 		return results;
 	}
+	/**
+	 * Method to return results from a query specifying only the technique.
+	 * @param technique - String representation of the technique to query.
+	 * @param m - RDF model to query.
+	 * @return ResultSet
+	 */
+	private ResultSet queryTechnique(String technique, Model m){
+		String queryValues = 
+			"PREFIX prop: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#> " +	
+			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+			"PREFIX metrology: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomMetrology.owl#>"+
+			"SELECT *"+
+			"WHERE {"+"?x prop:hasValue ?hasValue." +	
+			"?x prop:hasMeasurementTechnique ?technique."+			
+			"?x metrology:hasCondition ?condition."+
+			"?x prop:hasUnit ?hasUnit."+
+			"FILTER regex(?technique,"+ "\""+technique+"\")"+
+			"}"+
+			"LIMIT 100";
+		com.hp.hpl.jena.query.Query query = QueryFactory.create(queryValues);
+		QueryExecution qe = QueryExecutionFactory.create(query, m);
+		ResultSet results = qe.execSelect();
+		// Output query results	
+		ResultSetFormatter.out(System.out, results, query);
+		qe.close();
+		return results;
+	}
+	
+	private ResultSet queryCondition(String condition, Model m){
+		return null;
+	}
+	
+	private ResultSet queryUnits(String units, Model m){
+		return null;
+	}
+	
 }
