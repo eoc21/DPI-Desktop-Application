@@ -28,7 +28,6 @@ public class OurClickHandler implements MouseListener {
 		double exactFilterValue = 0;
 		double maximumValueSelected = 0;
 		double minimumValueSelected = 0;
-		String modifiedValue = getModifier(modifierSelected);
 		if(filterValue.equals("") && (maximumValue.equals("") || minimumValue.equals(""))){
 			System.out.println("Need to enter a value or range to query over!");
 			throw new NullPointerException();
@@ -37,7 +36,7 @@ public class OurClickHandler implements MouseListener {
 		else if(!filterValue.equals("")){
 			try{
 				exactFilterValue = Double.parseDouble(filterValue);	
-				ResultSet results = exactQuery(exactFilterValue, propertySelected, m);			
+				ResultSet results = exactQuery(exactFilterValue, propertySelected,getModifier(modifierSelected).trim(), m);			
 			}
 			catch(NumberFormatException e){
 				System.out.println("You need to enter a valid number!");
@@ -132,7 +131,7 @@ public class OurClickHandler implements MouseListener {
 	 * @param m - RDF model to search through.
 	 * @return ResultSet of all the hits.
 	 */
-	private ResultSet exactQuery(double exactFilterValue, String propertySelected, Model m){
+	private ResultSet exactQuery(double exactFilterValue, String propertySelected,String modifier, Model m){
 		String queryValues = 
 			"PREFIX prop: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#> " +	
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
@@ -143,7 +142,7 @@ public class OurClickHandler implements MouseListener {
 			"?x rdf:type <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#"+propertySelected+">."+
 			"?x metrology:hasCondition ?condition."+
 			"?x prop:hasUnit ?hasUnit."+
-			"FILTER(?hasValue >"+exactFilterValue+")"+
+			"FILTER(?hasValue "+modifier+exactFilterValue+")"+
 			"}"+
 			"LIMIT 100";
 		com.hp.hpl.jena.query.Query query = QueryFactory.create(queryValues);
