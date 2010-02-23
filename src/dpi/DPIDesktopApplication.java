@@ -148,24 +148,33 @@ public class DPIDesktopApplication extends JFrame {
 	}
 	/**
 	 * 
-	 * @return double value for exact property value search.
+	 * @return String value for exact property value search.
 	 */
-	public static double getValue(){
-		return Double.parseDouble(exactValueBox.getText());
+	public static String getValue(){
+		/*double value;
+		try{
+			value = Double.parseDouble(exactValueBox.getText());
+		}
+		catch(NumberFormatException e){
+			System.out.println("You need to enter a valid number!");
+			e.printStackTrace();
+			throw new NumberFormatException();
+		}*/
+		return exactValueBox.getText();
 	}
 	/**
 	 * 
-	 * @return double value for minimum value in a search by range.
+	 * @return String value for minimum value in a search by range.
 	 */
-	public static double getMaximum(){
-		return Double.parseDouble(maximumValueBox.getText());
+	public static String getMaximum(){
+		return maximumValueBox.getText();
 	}
 	/**
 	 * 
-	 * @return double value for maximum value in a search by range.
+	 * @return String value for maximum value in a search by range.
 	 */
-	public static double getMinimum(){
-		return Double.parseDouble(minimumValueBox.getText());
+	public static String getMinimum(){
+		return minimumValueBox.getText();
 	}
 	
 	//Methods to clear content in the text box.
