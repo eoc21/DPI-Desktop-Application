@@ -28,14 +28,16 @@ public class OurClickHandler implements MouseListener {
 		double exactFilterValue = 0;
 		double maximumValueSelected = 0;
 		double minimumValueSelected = 0;
-		if(filterValue =="" && (maximumValue == "" || minimumValue == "")){
+		String modifiedValue = getModifier(modifierSelected);
+		if(filterValue.equals("") && (maximumValue.equals("") || minimumValue.equals(""))){
 			System.out.println("Need to enter a value or range to query over!");
 			throw new NullPointerException();
 		}
 		
-		else if(filterValue !=""){
+		else if(!filterValue.equals("")){
 			try{
-				exactFilterValue = Double.parseDouble(filterValue);				
+				exactFilterValue = Double.parseDouble(filterValue);	
+				ResultSet results = exactQuery(exactFilterValue, propertySelected, m);			
 			}
 			catch(NumberFormatException e){
 				System.out.println("You need to enter a valid number!");
@@ -43,10 +45,11 @@ public class OurClickHandler implements MouseListener {
 				throw new NumberFormatException();
 			}
 		}
-		else if(filterValue == "" && maximumValue !="" && minimumValue !=""){
+		else if(filterValue.equals("") && !maximumValue.equals("") && !minimumValue.equals("")){
 			try{
 				maximumValueSelected = Double.parseDouble(maximumValue);
 				minimumValueSelected = Double.parseDouble(minimumValue);
+			    ResultSet results = rangeQuery(maximumValueSelected, minimumValueSelected,propertySelected, m);
 			}
 			catch(NumberFormatException e){
 				System.out.println("Either the max or minimum value is not a proper number!");
@@ -54,10 +57,7 @@ public class OurClickHandler implements MouseListener {
 				throw new NumberFormatException();
 			}
 		}
-		
-		
-		
-		String queryValues = 
+/*		String queryValues = 
 			"PREFIX prop: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#> " +	
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
 			"PREFIX metrology: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomMetrology.owl#>"+
@@ -85,7 +85,8 @@ public class OurClickHandler implements MouseListener {
 		System.out.println("Total time:"+totalTime);
 		System.out.println("Filter value:"+filterValue);
 		System.out.println(technique+" technique");
-		System.out.println(propertySelected);
+		System.out.println(propertySelected);*/
+		
 	}
 
 	@Override
@@ -104,4 +105,78 @@ public class OurClickHandler implements MouseListener {
 	public void mouseReleased(MouseEvent arg0) {
 	}
 
+	private String getModifier(String input){
+		String result = null;
+		if(input.equals("GreaterThan")){
+			result = ">";
+		}
+		else if(input.equals("LessThan")){
+			result = "<";
+		}
+		else if(input.equals("GreatThanOrEqual")){
+			result = ">=";
+		}
+		else if(input.equals("LessThanOrEqual")){
+			result = "<=";
+		}
+		else{
+			result = "Equal";
+		}
+		return result;
+	}
+	/**
+	 * Method returns the results of a SPARQL query given a property,
+	 * an RDF model, the exact property value and a modifier.
+	 * @param exactFilterValue - double for property value to use in the search.
+	 * @param propertySelected - String representation of the property to search for.
+	 * @param m - RDF model to search through.
+	 * @return ResultSet of all the hits.
+	 */
+	private ResultSet exactQuery(double exactFilterValue, String propertySelected, Model m){
+		String queryValues = 
+			"PREFIX prop: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#> " +	
+			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+			"PREFIX metrology: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomMetrology.owl#>"+
+			"SELECT *"+
+			"WHERE {"+"?x prop:hasValue ?hasValue." +	
+			"?x prop:hasMeasurementTechnique ?technique."+			
+			"?x rdf:type <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#"+propertySelected+">."+
+			"?x metrology:hasCondition ?condition."+
+			"?x prop:hasUnit ?hasUnit."+
+			"FILTER(?hasValue >"+exactFilterValue+")"+
+			"}"+
+			"LIMIT 100";
+		com.hp.hpl.jena.query.Query query = QueryFactory.create(queryValues);
+		QueryExecution qe = QueryExecutionFactory.create(query, m);
+		ResultSet results = qe.execSelect();
+		// Output query results	
+		ResultSetFormatter.out(System.out, results, query);
+		qe.close();
+		return results;
+	}
+	
+	private ResultSet rangeQuery(double maxValue, double minValue, String propertySelected, Model m){
+		String queryValues = 
+			"PREFIX prop: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#> " +	
+			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+			"PREFIX metrology: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomMetrology.owl#>"+
+			"SELECT *"+
+			"WHERE {"+"?x prop:hasValue ?hasValue." +	
+			"?x prop:hasMeasurementTechnique ?technique."+			
+			"?x rdf:type <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#"+propertySelected+">."+
+			"?x metrology:hasCondition ?condition."+
+			"?x prop:hasUnit ?hasUnit."+
+			"FILTER((?hasValue >="+minValue+") && (?hasValue <="+maxValue+"))"+
+			//"FILTER(?hasValue >="+minValue+")"+
+			//"FILTER(?hasValue <="+maxValue+")"+
+			"}"+
+			"LIMIT 100";
+		com.hp.hpl.jena.query.Query query = QueryFactory.create(queryValues);
+		QueryExecution qe = QueryExecutionFactory.create(query, m);
+		ResultSet results = qe.execSelect();
+		// Output query results	
+		ResultSetFormatter.out(System.out, results, query);
+		qe.close();
+		return results;
+	}
 }
