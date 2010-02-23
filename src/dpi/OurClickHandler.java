@@ -2,6 +2,7 @@ package dpi;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -342,6 +343,8 @@ public class OurClickHandler implements MouseListener {
 		// Output query results	
 		ResultSetFormatter.out(System.out, results, query);
 		qe.close();
+		//List<String> v = results.getResultVars();
+		//System.out.println(v.get(5));
 		return results;
 	}
 }
