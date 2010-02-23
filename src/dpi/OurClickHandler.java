@@ -44,6 +44,19 @@ public class OurClickHandler implements MouseListener {
 				throw new NumberFormatException();
 			}
 		}
+		else if(filterValue.equals("") && !maximumValue.equals("") && !minimumValue.equals("") && condition.equals("") && aUnit.equals("") && !technique.equals("")){
+			try{
+				maximumValueSelected = Double.parseDouble(maximumValue);
+				minimumValueSelected = Double.parseDouble(minimumValue);
+				ResultSet results = propertyTechniqueQuery(propertySelected, minimumValueSelected, maximumValueSelected, technique, m);
+			}
+			catch(NumberFormatException e){
+				System.out.println("Either the max or minimum value is not a proper number!");
+				e.printStackTrace();
+				throw new NumberFormatException();
+			}
+		}
+		
 		
 		else if (filterValue.equals("") && maximumValue.equals("") && minimumValue.equals("") && !condition.equals("") && aUnit.equals("") && technique.equals("")){
 			ResultSet results = queryCondition(condition, m);
@@ -81,37 +94,6 @@ public class OurClickHandler implements MouseListener {
 				throw new NumberFormatException();
 			}
 		}
-		
-/*		String queryValues = 
-			"PREFIX prop: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#> " +	
-			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
-			"PREFIX metrology: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomMetrology.owl#>"+
-			"SELECT *"+
-			"WHERE {"+"?x prop:hasValue ?hasValue." +	
-			"?x prop:hasMeasurementTechnique ?technique."+			
-			"?x rdf:type <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#"+propertySelected+">."+
-			"?x metrology:hasCondition ?condition."+
-			"?x prop:hasUnit ?hasUnit."+
-			"FILTER(?hasValue >"+exactFilterValue+")"+
-	//		"FILTER regex(?hasMeasurementTechnique,"+ "\""+technique+"\")"+
-			//	"FILTER regex(?hasUnit, \"[C]\")"+
-			"}"+
-			"LIMIT 100";
-		com.hp.hpl.jena.query.Query query = QueryFactory.create(queryValues);
-		QueryExecution qe = QueryExecutionFactory.create(query, m);
-		//Time the query
-		long startTime = System.currentTimeMillis();
-		ResultSet results = qe.execSelect();
-		long endTime = System.currentTimeMillis();
-		long totalTime =  endTime-startTime;
-		// Output query results	
-		ResultSetFormatter.out(System.out, results, query);
-		qe.close();
-		System.out.println("Total time:"+totalTime);
-		System.out.println("Filter value:"+filterValue);
-		System.out.println(technique+" technique");
-		System.out.println(propertySelected);*/
-		
 	}
 
 	@Override
@@ -303,8 +285,28 @@ public class OurClickHandler implements MouseListener {
 
 	}
 	
-	private ResultSet propertyTechniqueQuery(){
-		return null;
+	private ResultSet propertyTechniqueQuery(String propertySelected,double minValue, double maxValue, String technique, Model m){
+		String queryValues = 
+			"PREFIX prop: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#> " +	
+			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"+
+			"PREFIX metrology: <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomMetrology.owl#>"+
+			"SELECT *"+
+			"WHERE {"+"?x prop:hasValue ?hasValue." +	
+			"?x prop:hasMeasurementTechnique ?technique."+			
+			"?x rdf:type <http://www.polymerinformatics.com/ChemAxiom/ChemAxiomProp.owl#"+propertySelected+">."+
+			"?x metrology:hasCondition ?condition."+
+			"?x prop:hasUnit ?hasUnit."+
+			"FILTER((?hasValue >="+minValue+") && (?hasValue <="+maxValue+"))"+
+			"FILTER regex(?technique,"+ "\""+technique+"\")"+
+			"}"+
+			"LIMIT 100";
+		com.hp.hpl.jena.query.Query query = QueryFactory.create(queryValues);
+		QueryExecution qe = QueryExecutionFactory.create(query, m);
+		ResultSet results = qe.execSelect();
+		// Output query results	
+		ResultSetFormatter.out(System.out, results, query);
+		qe.close();
+		return results;
 	}
 	
 	private ResultSet propertyConditionQuery(){
