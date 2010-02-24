@@ -4,6 +4,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 
+import javax.swing.JTable;
+
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
@@ -50,6 +52,7 @@ public class OurClickHandler implements MouseListener {
 				maximumValueSelected = Double.parseDouble(maximumValue);
 				minimumValueSelected = Double.parseDouble(minimumValue);
 				ResultSet results = propertyTechniqueQuery(propertySelected, minimumValueSelected, maximumValueSelected, technique, m);
+				ResultsFrame rf = new ResultsFrame();
 			}
 			catch(NumberFormatException e){
 				System.out.println("Either the max or minimum value is not a proper number!");
@@ -343,8 +346,6 @@ public class OurClickHandler implements MouseListener {
 		// Output query results	
 		ResultSetFormatter.out(System.out, results, query);
 		qe.close();
-		//List<String> v = results.getResultVars();
-		//System.out.println(v.get(5));
 		return results;
-	}
+	}	
 }
