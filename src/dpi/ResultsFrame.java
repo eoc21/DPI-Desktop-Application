@@ -1,10 +1,16 @@
 package dpi;
 
 import java.awt.FlowLayout;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
 
 import com.hp.hpl.jena.query.ResultSet;
 /**
@@ -51,5 +57,11 @@ public class ResultsFrame extends JFrame {
 	
 	public  JTable getQueryResultsTable(ResultSet results){
 		return null;
+	}
+	
+	private void readInData() throws ValidityException, ParsingException, IOException{
+		Builder builder = new Builder();
+        Document doc = builder.build("ResultOutput.xml");
+        
 	}
 }

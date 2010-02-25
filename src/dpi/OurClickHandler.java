@@ -2,6 +2,10 @@ package dpi;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JTable;
@@ -9,9 +13,11 @@ import javax.swing.JTable;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 
 public class OurClickHandler implements MouseListener {
 
@@ -320,7 +326,14 @@ public class OurClickHandler implements MouseListener {
 		QueryExecution qe = QueryExecutionFactory.create(query, m);
 		ResultSet results = qe.execSelect();
 		// Output query results	
-		ResultSetFormatter.out(System.out, results, query);
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter("ResultOutput.xml"));
+			String b = ResultSetFormatter.asXMLString(results);	
+			bw.write(b);
+			bw.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		qe.close();
 		return results;
 	}
