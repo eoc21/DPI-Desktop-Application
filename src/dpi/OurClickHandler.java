@@ -63,7 +63,7 @@ public class OurClickHandler implements MouseListener {
 				minimumValueSelected = Double.parseDouble(minimumValue);
 				ResultSet results = propertyTechniqueQuery(propertySelected, minimumValueSelected, maximumValueSelected, technique, m);
 				ResultsFrame rf = new ResultsFrame();
-				Vector<Vector<DPISPARQLResult>> dataResults = rf.getData4Table();
+				Vector<Vector<String>> dataResults = rf.getData4Table();
 				Vector<String> headerInformation = rf.getHeaderInformation();
 				
 			}

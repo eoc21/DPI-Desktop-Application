@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import nu.xom.Builder;
@@ -27,7 +28,7 @@ import dpi.DPISPARQLResult;
  */
 public class ResultsFrame extends JFrame {
 	private Vector<String>headerInformation;
-	private Vector<Vector<DPISPARQLResult>> resultsInformation;
+	private Vector<Vector<String>> resultsInformation;
 	
 	public ResultsFrame() throws ValidityException, ParsingException, IOException{
 		setTitle("Results");
@@ -40,7 +41,9 @@ public class ResultsFrame extends JFrame {
 		headerInformation = getJTableColumnHeaders(doc);
 		resultsInformation = getJTableData(doc);
 		JTable resultsTable = new JTable(resultsInformation,headerInformation);
-		center.add(resultsTable);
+		resultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		JScrollPane pane = new JScrollPane(resultsTable);
+		center.add(pane);
 		add(center);
 		setVisible(true);
 	}
@@ -101,10 +104,10 @@ public class ResultsFrame extends JFrame {
 		return columnTitles;
 	}
 	
-	private Vector<Vector<DPISPARQLResult>> getJTableData(Document doc){
+	private Vector<Vector<String>> getJTableData(Document doc){
 		Element root = doc.getRootElement();
 		Node childThree = root.getChild(3);
-		Vector<Vector<DPISPARQLResult>> individualRows = new Vector<Vector<DPISPARQLResult>>();
+		Vector<Vector<String>> individualRows = new Vector<Vector<String>>();
 		int counter = 0;
 		for(int i=0;i<childThree.getChildCount();i++){
 			if(i%2 !=0){
@@ -131,7 +134,13 @@ public class ResultsFrame extends JFrame {
 				}
 				Vector<DPISPARQLResult> aVector = new Vector<DPISPARQLResult>();
 				aVector.add(sparqlHit);
-				individualRows.add(counter, aVector);
+				Vector<String>aStringVector = new Vector<String>();
+				aStringVector.add(sparqlHit.getPropertyName());
+				aStringVector.add(Double.toString(sparqlHit.getPropertyValue()));
+				aStringVector.add(sparqlHit.getTechnique());
+				aStringVector.add(sparqlHit.getCondition());
+				aStringVector.add(sparqlHit.getUnit());
+				individualRows.add(counter, aStringVector);
 				counter++;
 			}
 		}
@@ -144,7 +153,7 @@ public class ResultsFrame extends JFrame {
 		return headerInformation;
 	}
 	
-	public Vector<Vector<DPISPARQLResult>> getData4Table(){
+	public Vector<Vector<String>> getData4Table(){
 		return resultsInformation;
 	}
 	
