@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JTable;
 
@@ -62,6 +63,9 @@ public class OurClickHandler implements MouseListener {
 				minimumValueSelected = Double.parseDouble(minimumValue);
 				ResultSet results = propertyTechniqueQuery(propertySelected, minimumValueSelected, maximumValueSelected, technique, m);
 				ResultsFrame rf = new ResultsFrame();
+				Vector<Vector<DPISPARQLResult>> dataResults = rf.getData4Table();
+				Vector<String> headerInformation = rf.getHeaderInformation();
+				
 			}
 			catch(NumberFormatException e){
 				System.out.println("Either the max or minimum value is not a proper number!");

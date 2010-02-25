@@ -34,11 +34,13 @@ public class ResultsFrame extends JFrame {
 		this.setSize(600, 600);
 		JPanel center = new JPanel( new FlowLayout(FlowLayout.LEFT) );
 		center.setSize(500, 500);
-		JTable resultsTable = basicTable();
-		center.add(resultsTable);
+		//JTable resultsTable = basicTable();
+		//center.add(resultsTable);
 		Document doc = readInData();
 		headerInformation = getJTableColumnHeaders(doc);
 		resultsInformation = getJTableData(doc);
+		JTable resultsTable = new JTable(resultsInformation,headerInformation);
+		center.add(resultsTable);
 		add(center);
 		setVisible(true);
 	}
@@ -133,7 +135,8 @@ public class ResultsFrame extends JFrame {
 				counter++;
 			}
 		}
-		System.out.println(individualRows.get(0).get(0).getPropertyName());
+//		System.out.println(individualRows.get(0).get(0).getPropertyName());
+		//Need to process this into a single vector.
 		return individualRows;
 	}
 
@@ -144,4 +147,5 @@ public class ResultsFrame extends JFrame {
 	public Vector<Vector<DPISPARQLResult>> getData4Table(){
 		return resultsInformation;
 	}
+	
 }
