@@ -26,14 +26,19 @@ import dpi.DPISPARQLResult;
  *
  */
 public class ResultsFrame extends JFrame {
-
-	public ResultsFrame(){
+	private Vector<String>headerInformation;
+	private Vector<Vector<DPISPARQLResult>> resultsInformation;
+	
+	public ResultsFrame() throws ValidityException, ParsingException, IOException{
 		setTitle("Results");
 		this.setSize(600, 600);
 		JPanel center = new JPanel( new FlowLayout(FlowLayout.LEFT) );
 		center.setSize(500, 500);
 		JTable resultsTable = basicTable();
 		center.add(resultsTable);
+		Document doc = readInData();
+		headerInformation = getJTableColumnHeaders(doc);
+		resultsInformation = getJTableData(doc);
 		add(center);
 		setVisible(true);
 	}
@@ -132,4 +137,11 @@ public class ResultsFrame extends JFrame {
 		return individualRows;
 	}
 
+	public Vector<String> getHeaderInformation(){
+		return headerInformation;
+	}
+	
+	public Vector<Vector<DPISPARQLResult>> getData4Table(){
+		return resultsInformation;
+	}
 }

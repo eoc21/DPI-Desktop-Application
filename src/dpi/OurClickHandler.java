@@ -10,6 +10,9 @@ import java.util.List;
 
 import javax.swing.JTable;
 
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
+
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
@@ -64,6 +67,12 @@ public class OurClickHandler implements MouseListener {
 				System.out.println("Either the max or minimum value is not a proper number!");
 				e.printStackTrace();
 				throw new NumberFormatException();
+			} catch (ValidityException e) {
+				e.printStackTrace();
+			} catch (ParsingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		
