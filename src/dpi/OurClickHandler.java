@@ -268,7 +268,15 @@ public class OurClickHandler implements MouseListener {
 		QueryExecution qe = QueryExecutionFactory.create(query, m);
 		ResultSet results = qe.execSelect();
 		// Output query results	
-		ResultSetFormatter.out(System.out, results, query);
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter("ResultOutput.xml"));
+			String b = ResultSetFormatter.asXMLString(results);	
+			bw.write(b);
+			bw.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		//ResultSetFormatter.out(System.out, results, query);
 		qe.close();
 		return results;
 	}
@@ -293,7 +301,15 @@ public class OurClickHandler implements MouseListener {
 		QueryExecution qe = QueryExecutionFactory.create(query, m);
 		ResultSet results = qe.execSelect();
 		// Output query results	
-		ResultSetFormatter.out(System.out, results, query);
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter("ResultOutput.xml"));
+			String b = ResultSetFormatter.asXMLString(results);	
+			bw.write(b);
+			bw.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		//ResultSetFormatter.out(System.out, results, query);
 		qe.close();
 		return results;
 	}
@@ -320,7 +336,15 @@ public class OurClickHandler implements MouseListener {
 		QueryExecution qe = QueryExecutionFactory.create(query, m);
 		ResultSet results = qe.execSelect();
 		// Output query results	
-		ResultSetFormatter.out(System.out, results, query);
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter("ResultOutput.xml"));
+			String b = ResultSetFormatter.asXMLString(results);	
+			bw.write(b);
+			bw.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		//ResultSetFormatter.out(System.out, results, query);
 		qe.close();
 		return results;
 	}
@@ -342,7 +366,15 @@ public class OurClickHandler implements MouseListener {
 		QueryExecution qe = QueryExecutionFactory.create(query, m);
 		ResultSet results = qe.execSelect();
 		// Output query results	
-		ResultSetFormatter.out(System.out, results, query);
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter("ResultOutput.xml"));
+			String b = ResultSetFormatter.asXMLString(results);	
+			bw.write(b);
+			bw.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		//ResultSetFormatter.out(System.out, results, query);
 		qe.close();
 		return results;
 
@@ -365,7 +397,15 @@ public class OurClickHandler implements MouseListener {
 		QueryExecution qe = QueryExecutionFactory.create(query, m);
 		ResultSet results = qe.execSelect();
 		// Output query results	
-		ResultSetFormatter.out(System.out, results, query);
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter("ResultOutput.xml"));
+			String b = ResultSetFormatter.asXMLString(results);	
+			bw.write(b);
+			bw.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		//ResultSetFormatter.out(System.out, results, query);
 		qe.close();
 		return results;
 	}
@@ -390,7 +430,15 @@ public class OurClickHandler implements MouseListener {
 	QueryExecution qe = QueryExecutionFactory.create(query, m);
 	ResultSet results = qe.execSelect();
 	// Output query results	
-	ResultSetFormatter.out(System.out, results, query);
+	//ResultSetFormatter.out(System.out, results, query);
+	try {
+		BufferedWriter bw = new BufferedWriter(new FileWriter("ResultOutput.xml"));
+		String b = ResultSetFormatter.asXMLString(results);	
+		bw.write(b);
+		bw.close();
+	} catch (IOException e1) {
+		e1.printStackTrace();
+	}
 	qe.close();
 	return results;
 
@@ -445,8 +493,16 @@ public class OurClickHandler implements MouseListener {
 		com.hp.hpl.jena.query.Query query = QueryFactory.create(queryValues);
 		QueryExecution qe = QueryExecutionFactory.create(query, m);
 		ResultSet results = qe.execSelect();
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter("ResultOutput.xml"));
+			String b = ResultSetFormatter.asXMLString(results);	
+			bw.write(b);
+			bw.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		// Output query results	
-		ResultSetFormatter.out(System.out, results, query);
+		//ResultSetFormatter.out(System.out, results, query);
 		qe.close();
 		return results;
 	}	
