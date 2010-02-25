@@ -42,19 +42,41 @@ public class OurClickHandler implements MouseListener {
 		double maximumValueSelected = 0;
 		double minimumValueSelected = 0;
 		if(filterValue.equals("") && maximumValue.equals("") && minimumValue.equals("") && condition.equals("") && aUnit.equals("") && !technique.equals("")){
-			ResultSet results = queryTechnique(technique, m);
-			System.out.println(technique);
+			try {
+				ResultSet results = queryTechnique(technique, m);
+				ResultsFrame rf;
+				rf = new ResultsFrame();
+				Vector<Vector<String>> dataResults = rf.getData4Table();
+				Vector<String> headerInformation = rf.getHeaderInformation();
+			} catch (ValidityException e) {
+				e.printStackTrace();
+			} catch (ParsingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			//System.out.println(technique);
 		}
 		else if(filterValue.equals("") && !maximumValue.equals("") && !minimumValue.equals("") && !condition.equals("") && aUnit.equals("") && !technique.equals("")){
 			try{
 				maximumValueSelected = Double.parseDouble(maximumValue);
 				minimumValueSelected = Double.parseDouble(minimumValue);
 				ResultSet results = propertyTechniqueConditionQuery(propertySelected, minimumValueSelected, maximumValueSelected, technique, condition, m);
+				ResultsFrame rf;
+				rf = new ResultsFrame();
+				Vector<Vector<String>> dataResults = rf.getData4Table();
+				Vector<String> headerInformation = rf.getHeaderInformation();
 			}
 			catch(NumberFormatException e){
 				System.out.println("Either the max or minimum value is not a proper number!");
 				e.printStackTrace();
 				throw new NumberFormatException();
+			} catch (ValidityException e) {
+				e.printStackTrace();
+			} catch (ParsingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		else if(filterValue.equals("") && !maximumValue.equals("") && !minimumValue.equals("") && condition.equals("") && aUnit.equals("") && !technique.equals("")){
@@ -85,20 +107,56 @@ public class OurClickHandler implements MouseListener {
 				maximumValueSelected = Double.parseDouble(maximumValue);
 				minimumValueSelected = Double.parseDouble(minimumValue);
 				ResultSet results = propertyConditionQuery(propertySelected, minimumValueSelected, maximumValueSelected, condition, m);
+				ResultsFrame rf = new ResultsFrame();
+				Vector<Vector<String>> dataResults = rf.getData4Table();
+				Vector<String> headerInformation = rf.getHeaderInformation();
 			}
 			catch(NumberFormatException e){
 				System.out.println("Either the max or minimum value is not a proper number!");
 				e.printStackTrace();
 				throw new NumberFormatException();
+			} catch (ValidityException e) {
+				e.printStackTrace();
+			} catch (ParsingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		
 		else if (filterValue.equals("") && maximumValue.equals("") && minimumValue.equals("") && !condition.equals("") && aUnit.equals("") && technique.equals("")){
 			ResultSet results = queryCondition(condition, m);
+			ResultsFrame rf;
+			try {
+				rf = new ResultsFrame();
+				Vector<Vector<String>> dataResults = rf.getData4Table();
+				Vector<String> headerInformation = rf.getHeaderInformation();
+			} catch (ValidityException e) {
+				e.printStackTrace();
+			} catch (ParsingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		else if(filterValue.equals("") && maximumValue.equals("") && minimumValue.equals("") && condition.equals("") && !aUnit.equals("") && technique.equals("")){
 			ResultSet results = queryUnits(aUnit, m);
+			ResultsFrame rf;
+			try {
+				rf = new ResultsFrame();
+				Vector<Vector<String>> dataResults = rf.getData4Table();
+				Vector<String> headerInformation = rf.getHeaderInformation();
+			} catch (ValidityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParsingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		else if(filterValue.equals("") && (maximumValue.equals("") || minimumValue.equals(""))){
@@ -110,11 +168,20 @@ public class OurClickHandler implements MouseListener {
 			try{
 				exactFilterValue = Double.parseDouble(filterValue);	
 				ResultSet results = exactQuery(exactFilterValue, propertySelected,getModifier(modifierSelected).trim(), m);			
+				ResultsFrame rf = new ResultsFrame();
+				Vector<Vector<String>> dataResults = rf.getData4Table();
+				Vector<String> headerInformation = rf.getHeaderInformation();
 			}
 			catch(NumberFormatException e){
 				System.out.println("You need to enter a valid number!");
 				e.printStackTrace();
 				throw new NumberFormatException();
+			} catch (ValidityException e) {
+				e.printStackTrace();
+			} catch (ParsingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		else if(filterValue.equals("") && !maximumValue.equals("") && !minimumValue.equals("")){
@@ -122,11 +189,20 @@ public class OurClickHandler implements MouseListener {
 				maximumValueSelected = Double.parseDouble(maximumValue);
 				minimumValueSelected = Double.parseDouble(minimumValue);
 			    ResultSet results = rangeQuery(maximumValueSelected, minimumValueSelected,propertySelected, m);
+				ResultsFrame rf = new ResultsFrame();
+				Vector<Vector<String>> dataResults = rf.getData4Table();
+				Vector<String> headerInformation = rf.getHeaderInformation();
 			}
 			catch(NumberFormatException e){
 				System.out.println("Either the max or minimum value is not a proper number!");
 				e.printStackTrace();
 				throw new NumberFormatException();
+			} catch (ValidityException e) {
+				e.printStackTrace();
+			} catch (ParsingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
