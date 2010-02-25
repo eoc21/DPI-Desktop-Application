@@ -1,5 +1,6 @@
 package dpi;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.io.IOException;
 import java.util.Vector;
@@ -8,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
 
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -43,6 +45,8 @@ public class ResultsFrame extends JFrame {
 		JTable resultsTable = new JTable(resultsInformation,headerInformation);
 		resultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		resultsTable.setAutoCreateRowSorter(true);
+		JTableHeader header = resultsTable.getTableHeader();
+	    header.setBackground(Color.yellow);
 		JScrollPane pane = new JScrollPane(resultsTable);
 		center.add(pane);
 		add(center);
