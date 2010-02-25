@@ -42,6 +42,7 @@ public class ResultsFrame extends JFrame {
 		resultsInformation = getJTableData(doc);
 		JTable resultsTable = new JTable(resultsInformation,headerInformation);
 		resultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		resultsTable.setAutoCreateRowSorter(true);
 		JScrollPane pane = new JScrollPane(resultsTable);
 		center.add(pane);
 		add(center);
