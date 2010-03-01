@@ -238,7 +238,7 @@ public class OurClickHandler implements MouseListener {
 			result = "<=";
 		}
 		else{
-			result = "Equal";
+			result = "=";
 		}
 		return result;
 	}
