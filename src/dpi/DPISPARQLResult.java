@@ -6,6 +6,7 @@ public class DPISPARQLResult {
 	private String technique;
 	private String condition;
 	private String unit;
+	private String polymerName;
 	
 	public DPISPARQLResult(){
 	}
@@ -38,6 +39,9 @@ public class DPISPARQLResult {
 		return unit;
 	}
 	
+	public String getPolymerName(){
+		return polymerName;
+	}
 	public void setPropertyName(String propertyName){
 		this.property = propertyName;
 	}
@@ -56,6 +60,10 @@ public class DPISPARQLResult {
 	
 	public void setUnit(String unitValue){
 		this.unit = unitValue;
+	}
+	
+	public void setPolymerName(String polymer){
+		this.polymerName = polymer;
 	}
 	
 }
