@@ -2,7 +2,11 @@ package dpi;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -101,6 +105,8 @@ public class ResultsFrame extends JFrame {
 		Element root = doc.getRootElement();
 		Node headerInformation = root.getChild(1);
 		Vector<String> columnTitles = new Vector<String>();
+		//New addition of polymer name
+		columnTitles.add("IUPAC Name");
 		for(int i=0;i<headerInformation.getChildCount();i++){
 			if( i%2  !=0){
 				columnTitles.add(headerInformation.getChild(i).query("attribute::name").get(0).getValue());
@@ -109,7 +115,8 @@ public class ResultsFrame extends JFrame {
 		return columnTitles;
 	}
 	
-	private Vector<Vector<String>> getJTableData(Document doc){
+	private Vector<Vector<String>> getJTableData(Document doc) throws IOException{
+		HashMap<String, String> mapofIds = populatePolymerIdMap();
 		Element root = doc.getRootElement();
 		Node childThree = root.getChild(3);
 		Vector<Vector<String>> individualRows = new Vector<Vector<String>>();
@@ -123,6 +130,9 @@ public class ResultsFrame extends JFrame {
 					if(v.get(0).getValue().toString().equals("x")){
 						String[] uriValue = nd.get(j).getValue().split("#");
 						sparqlHit.setPropertyName(uriValue[1]);
+						//In development
+						String[] polymerName = uriValue[1].split("_");
+						sparqlHit.setPolymerName(mapofIds.get(polymerName[0]));
 					}
 					else if(v.get(0).getValue().toString().equals("hasValue")){
 						sparqlHit.setPropertyValue(Double.parseDouble(nd.get(j).getValue()));
@@ -140,6 +150,7 @@ public class ResultsFrame extends JFrame {
 				Vector<DPISPARQLResult> aVector = new Vector<DPISPARQLResult>();
 				aVector.add(sparqlHit);
 				Vector<String>aStringVector = new Vector<String>();
+				aStringVector.add(sparqlHit.getPolymerName());
 				aStringVector.add(sparqlHit.getPropertyName());
 				aStringVector.add(Double.toString(sparqlHit.getPropertyValue()));
 				aStringVector.add(sparqlHit.getTechnique());
@@ -160,6 +171,17 @@ public class ResultsFrame extends JFrame {
 	
 	public Vector<Vector<String>> getData4Table(){
 		return resultsInformation;
+	}
+	
+	private HashMap<String,String> populatePolymerIdMap() throws IOException{	
+		BufferedReader br = new BufferedReader(new FileReader("UniquePolymerIds.txt"));
+		HashMap<String,String> hm = new HashMap<String,String>();
+		String line;
+		while((line = br.readLine()) != null){
+			String[] idAndName = line.split(" ");
+			hm.put(idAndName[0], idAndName[1]);
+		}
+		return hm;
 	}
 	
 }
