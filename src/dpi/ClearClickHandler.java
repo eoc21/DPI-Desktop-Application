@@ -5,7 +5,6 @@ import java.awt.event.MouseListener;
 
 public class ClearClickHandler implements MouseListener {
 
-	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		DPIDesktopApplication.setConditionBoxValue("");
 		DPIDesktopApplication.setExactTextBoxValue("");
@@ -15,19 +14,15 @@ public class ClearClickHandler implements MouseListener {
 		DPIDesktopApplication.setUnitBoxValue("");
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent arg0) {
 	}
 
-	@Override
 	public void mouseExited(MouseEvent arg0) {
 	}
 
-	@Override
 	public void mousePressed(MouseEvent arg0) {
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent arg0) {
 	}
 

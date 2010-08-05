@@ -38,19 +38,20 @@ public class ResultsFrame extends JFrame {
 	
 	public ResultsFrame() throws ValidityException, ParsingException, IOException{
 		setTitle("Results");
-		this.setSize(600, 600);
+		this.setSize(1000, 1000);
 		JPanel center = new JPanel( new FlowLayout(FlowLayout.LEFT) );
-		center.setSize(500, 500);
+		center.setSize(900, 900);
 		//JTable resultsTable = basicTable();
 		//center.add(resultsTable);
 		Document doc = readInData();
 		headerInformation = getJTableColumnHeaders(doc);
 		resultsInformation = getJTableData(doc);
 		JTable resultsTable = new JTable(resultsInformation,headerInformation);
-		resultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		resultsTable.setSize(800, 800);
+	//	resultsTable.setAutoResizeMode(JTable.);
 		resultsTable.setAutoCreateRowSorter(true);
 		JTableHeader header = resultsTable.getTableHeader();
-	    header.setBackground(Color.yellow);
+	    header.setBackground(Color.red);
 		JScrollPane pane = new JScrollPane(resultsTable);
 		center.add(pane);
 		add(center);

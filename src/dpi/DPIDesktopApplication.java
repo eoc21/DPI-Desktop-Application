@@ -48,13 +48,11 @@ public class DPIDesktopApplication extends JFrame {
 		propertyList.setSelectedIndex(0);
 		equalityList.setSelectedIndex(0);
 		propertyList.addItemListener(new ItemListener(){
-		    @Override
-			public void itemStateChanged(ItemEvent arg0) {
+		    public void itemStateChanged(ItemEvent arg0) {
 				 String str = (String)propertyList.getSelectedItem();
 				 propertySelected.setText(str);  
 			}});
 		equalityList.addItemListener(new ItemListener(){
-			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				 String str = (String)equalityList.getSelectedItem();
 				 modifierSelected.setText(str);  
